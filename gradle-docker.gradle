@@ -1,9 +1,17 @@
+import java.text.SimpleDateFormat
+
+plugins {
+    id "com.jfrog.bintray" version "1.1"
+}
+
 ext.groovyVersion  = '2.4.3'
+ext.gradleVersion  = '2.3'
 
 apply plugin: 'groovy'
+apply plugin: 'maven-publish'
 apply plugin: 'idea'
 
-version = '0.1-SNAPSHOT'
+ext.releaseVersion = calculateVersion('0.1')
 
 repositories {
     jcenter()
@@ -12,8 +20,8 @@ repositories {
 dependencies {
     compile gradleApi()
 /**
- * because it's a plugin it's easier to use localGroovy() vs. matching versions w/ gradle and getting the
- * dreaded 'Conflicting module versions' error
+ * It's a plugin - therefore it's easier to use localGroovy() vs. matching versions w/ gradle and getting the
+ * dreaded 'Conflicting module versions' error <- GP 29/3/2015
  * compile "org.codehaus.groovy:groovy-all:$groovyVersion"
  */
     compile localGroovy()
@@ -25,3 +33,67 @@ dependencies {
     }
 }
 
+compileGroovy {
+    sourceCompatibility = '1.6'
+    targetCompatibility = '1.6'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId    'com.energizedwork'
+            artifactId 'gradle-docker'
+            version    releaseVersion
+
+            from components.java
+        }
+    }
+}
+
+bintray {
+    dryRun = false
+    publish = true
+
+    key  = bintrayApiKey
+    user = bintrayUser
+
+    publications = ['mavenJava']
+
+    pkg {
+        repo = 'maven'
+        name = 'gradle-docker'
+        desc = 'Gradle docker plugin allowing management of docker containers and images from build scripts.'
+
+        licenses = ['GPLv2']
+
+        websiteUrl      = 'https://github.com/guspower/gradle-docker'
+        issueTrackerUrl = 'https://github.com/guspower/gradle-docker/issues'
+        vcsUrl          = 'https://github.com/guspower/gradle-docker.git'
+
+        labels = ['docker', 'gradle', 'groovy']
+        publicDownloadNumbers = true
+
+        version {
+            name = releaseVersion
+
+            mavenCentralSync {
+                sync = false
+            }
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = gradleVersion
+}
+
+String calculateVersion(String version) {
+    String result = version
+    if(version.endsWith('SNAPSHOT')) {
+        def format = new SimpleDateFormat('yyyyMMddHHmmss')
+        format.setCalendar(Calendar.getInstance(TimeZone.getTimeZone('UTC')));
+        String date = format.format(new Date())
+        result = version.replace('SNAPSHOT', date)
+    }
+    result
+}
