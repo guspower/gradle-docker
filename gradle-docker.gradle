@@ -1,0 +1,27 @@
+ext.groovyVersion  = '2.4.3'
+
+apply plugin: 'groovy'
+apply plugin: 'idea'
+
+version = '0.1-SNAPSHOT'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile gradleApi()
+/**
+ * because it's a plugin it's easier to use localGroovy() vs. matching versions w/ gradle and getting the
+ * dreaded 'Conflicting module versions' error
+ * compile "org.codehaus.groovy:groovy-all:$groovyVersion"
+ */
+    compile localGroovy()
+    compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
+    compile 'org.apache.commons:commons-compress:1.9'
+
+    testCompile "org.spockframework:spock-core:0.7-groovy-2.0", {
+        exclude module: "groovy-all"
+    }
+}
+
