@@ -1,5 +1,6 @@
 package com.energizedwork.gradle.docker.config
 
+import com.energizedwork.docker.http.DockerServerConfig
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.gradle.api.Project
@@ -53,6 +54,23 @@ class Host {
     }
 
     boolean isSSL() { protocol == 'https' }
+
+    def asType(Class clazz) {
+        if(clazz == DockerServerConfig) {
+            def config = new DockerServerConfig(url: url)
+            if(tls) {
+                if(tls.keystore) {
+                    config.keystoreFile = tls.keystore.file
+                    config.keystorePassword = tls.keystore.password
+                }
+                if(tls.truststore) {
+                    config.truststoreFile = tls.truststore.file
+                    config.truststorePassword = tls.truststore.password
+                }
+            }
+            config
+        }
+    }
 
     private URL buildUrl(String name, Integer port, Tls tls) throws MalformedURLException {
         def result = new StringBuilder()

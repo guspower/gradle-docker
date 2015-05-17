@@ -11,14 +11,13 @@ apply plugin: 'gradle-docker'
 
 docker {
     host {
-        alias = 'dev'
-        url = 'https://localhost:2375'
+        url = 'https://spinship:664'
         tls {
             keystore {
-                password = 'keystore-password'
+                password = 'password'
             }
             truststore {
-                password = 'truststore-password'
+                password = 'password'
             }
         }
     }

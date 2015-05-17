@@ -11,14 +11,6 @@ class Server {
     private RESTClient _server
     private Closure requestFailure = { resp -> println resp.statusLine }
 
-    Server() {
-        this(new TLSConfig())
-    }
-
-    Server(String host) {
-        this(new TLSConfig(host: host))
-    }
-
     Server(DockerServerConfig config) {
         _server = new RESTClient(config.baseUrl)
         config.configure _server

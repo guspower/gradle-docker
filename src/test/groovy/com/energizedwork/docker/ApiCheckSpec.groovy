@@ -5,6 +5,7 @@ import ch.qos.logback.classic.Logger
 import ch.qos.logback.classic.LoggerContext
 import com.energizedwork.docker.event.container.CreateContainer
 import com.energizedwork.docker.event.image.UploadImage
+import com.energizedwork.docker.http.DockerServerConfig
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
 import org.slf4j.LoggerFactory
 import spock.lang.Shared
@@ -24,8 +25,15 @@ class ApiCheckSpec extends Specification implements AsyncTestUtils {
         Logger logger = context.getLogger(Logger.ROOT_LOGGER_NAME)
         logger.level = Level.WARN
 
-        client = new Client()
-        client.configure host
+        def config = new DockerServerConfig(
+            url: new URL('https://spinship:664'),
+            keystoreFile: new File("${System.getenv('HOME')}/.docker/spinship/client.jks"),
+            keystorePassword: 'password',
+            truststoreFile: new File("${System.getenv('HOME')}/.docker/spinship/client.jts"),
+            truststorePassword: 'password'
+        )
+
+        client = new Client(config)
 
         busybox = new CreateContainer(
                 imageName: 'busybox',

@@ -2,6 +2,7 @@ package com.energizedwork.gradle
 
 import com.energizedwork.docker.Client
 import com.energizedwork.docker.Container
+import com.energizedwork.docker.http.DockerServerConfig
 import com.energizedwork.gradle.docker.config.Host
 import org.gradle.api.Project
 
@@ -28,12 +29,9 @@ class DockerPluginExtension {
     List<String> command
     String image
 
-    Map tls = [:]
-
     Client getClient() {
         if(! _client) {
-            _client = new Client()
-            _client.configure host, tls
+            _client = new Client(host.asType(DockerServerConfig))
         }
 
         _client

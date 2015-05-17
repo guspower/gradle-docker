@@ -29,8 +29,8 @@ class DockerPluginUsageSpec extends Specification implements AsyncTestUtils {
             println stdout
 
         where:
-//            task << ['containers', 'images']
-            task << ['tasks']
+            task << ['containers', 'images']
+//            task << ['tasks']
     }
 
 
