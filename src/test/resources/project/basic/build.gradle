@@ -1,0 +1,25 @@
+buildscript {
+    dependencies {
+        classpath rootProject
+    }
+    repositories {
+        jcenter()
+    }
+}
+
+apply plugin: 'gradle-docker'
+
+docker {
+    host {
+        alias = 'dev'
+        url = 'https://localhost:2375'
+        tls {
+            keystore {
+                password = 'keystore-password'
+            }
+            truststore {
+                password = 'truststore-password'
+            }
+        }
+    }
+}

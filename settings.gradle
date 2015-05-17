@@ -1,1 +1,2 @@
 rootProject.buildFileName = 'gradle-docker.gradle'
+include 'src/test/resources/project/basic'

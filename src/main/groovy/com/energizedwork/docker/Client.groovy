@@ -26,6 +26,7 @@ import com.energizedwork.docker.event.server.Info
 import com.energizedwork.docker.event.server.Ping
 import com.energizedwork.docker.event.server.Version
 import com.energizedwork.docker.http.Server
+import com.energizedwork.docker.http.TLSConfig
 import groovy.transform.ToString
 
 
@@ -33,8 +34,6 @@ import groovy.transform.ToString
 class Client {
 
     private Server _server
-
-    String host = 'localhost'
 
     Map<String, ?> info()    { server.get new Info() }
     boolean ping()           { server.get new Ping() }
@@ -75,20 +74,22 @@ class Client {
     }
     void uploadImage(UploadImage upload) { server.request upload }
 
-    void configureSSL(Map options) {
-        def ssl = new Server.SSLClientCertificate(host: host)
+    void configure(String host, Map options = [:]) {
+        def tls = new TLSConfig(host: host)
         options.each { String key, value ->
-            if(ssl.hasProperty(key)) {
+            if(tls.hasProperty(key)) {
                 options."$key" = value
+            } else {
+                println "Unable to set unknown TLS property '${key}' to value [$value]"
             }
         }
 
-        _server = new Server(ssl)
+        _server = new Server(tls)
     }
 
     private Server getServer() {
         if(!_server) {
-            _server = new Server(host)
+            _server = new Server()
         }
         _server
     }

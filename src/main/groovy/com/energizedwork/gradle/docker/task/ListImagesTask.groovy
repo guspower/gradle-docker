@@ -1,13 +1,13 @@
-package com.energizedwork.gradle.docker
+package com.energizedwork.gradle.docker.task
 
 import com.energizedwork.docker.Client
 import com.energizedwork.gradle.DockerPluginExtension
 
-class ListContainersTask extends AbstractDockerTask {
+class ListImagesTask extends AbstractDockerTask {
 
     @Override
     void run(Client client, DockerPluginExtension extension) {
-        client.containers().each { println it }
+        client.images().each { println it }
     }
 
 }

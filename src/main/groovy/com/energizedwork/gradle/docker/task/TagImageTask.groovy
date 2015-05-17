@@ -1,8 +1,7 @@
-package com.energizedwork.gradle.docker
+package com.energizedwork.gradle.docker.task
 
 import com.energizedwork.docker.Client
 import com.energizedwork.docker.Image
-import com.energizedwork.docker.event.container.CreateContainer
 import com.energizedwork.gradle.DockerPluginExtension
 
 class TagImageTask extends AbstractDockerTask {

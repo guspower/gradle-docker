@@ -24,7 +24,8 @@ class ApiCheckSpec extends Specification implements AsyncTestUtils {
         Logger logger = context.getLogger(Logger.ROOT_LOGGER_NAME)
         logger.level = Level.WARN
 
-        client = new Client(host: host)
+        client = new Client()
+        client.configure host
 
         busybox = new CreateContainer(
                 imageName: 'busybox',
@@ -42,22 +43,6 @@ class ApiCheckSpec extends Specification implements AsyncTestUtils {
         client.images().findAll { Image image ->
             image.tags.find { it.contains(hostnamePattern) }
         }.each { removeImage it }
-    }
-
-    private void removeContainer(Container container) {
-        println "Cleaning up test container [$container]..."
-
-        initConditions container.id
-        client.kill container.id
-        waitFor stopped
-        client.delete container.id
-        waitFor deleted
-    }
-
-    private void removeImage(Image image) {
-        println "Cleaning up test image [$image]..."
-
-        client.deleteImage image.id
     }
 
     @Unroll('can call #action on docker API')
@@ -364,13 +349,20 @@ CMD ["/bin/true"]
         client.inspect id
     }
 
-    private boolean stopAndDelete(String id) {
-        client.kill id
-        waitFor stopped
-        client.delete id
-        waitFor deleted
+    private void removeContainer(Container container) {
+        println "Cleaning up test container [$container]..."
 
-        true
+        initConditions container.id
+        client.kill container.id
+        waitFor stopped
+        client.delete container.id
+        waitFor deleted
+    }
+
+    private void removeImage(Image image) {
+        println "Cleaning up test image [$image]..."
+
+        client.deleteImage image.id
     }
 
     private List<String> getArchiveEntries(File tar) {

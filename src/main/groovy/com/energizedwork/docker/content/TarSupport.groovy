@@ -16,8 +16,8 @@ class TarSupport {
         encode data
     }
 
-    void configure(HTTPBuilder http) {
-        http.encoder."$CONTENT_TYPE_NAME" = this.&encodeTarFile
+    static configure(HTTPBuilder http) {
+        http.encoder."$CONTENT_TYPE_NAME" = new TarSupport().&encodeTarFile
     }
 
     private HttpEntity encode(File file) {

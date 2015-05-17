@@ -1,4 +1,4 @@
-package com.energizedwork.gradle.docker
+package com.energizedwork.gradle.docker.task
 
 import com.energizedwork.docker.Client
 import com.energizedwork.gradle.DockerPluginExtension

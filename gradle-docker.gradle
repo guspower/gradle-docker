@@ -11,7 +11,8 @@ apply plugin: 'groovy'
 apply plugin: 'maven-publish'
 apply plugin: 'idea'
 
-ext.releaseVersion = calculateVersion('0.1')
+version            = '0.2-SNAPSHOT'
+ext.releaseVersion = calculateVersion('0.2-SNAPSHOT')
 
 repositories {
     jcenter()
@@ -45,7 +46,7 @@ publishing {
             artifactId 'gradle-docker'
             version    releaseVersion
 
-            from components.java
+            from       components.java
         }
     }
 }
