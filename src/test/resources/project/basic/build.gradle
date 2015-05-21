@@ -21,4 +21,19 @@ docker {
             }
         }
     }
+
+    container {
+        counter {
+            create {
+                before = 'test'
+                image = 'busybox:latest'
+                command = ['/bin/sh']
+            }
+            delete {
+
+            }
+        }
+    }
+
+
 }

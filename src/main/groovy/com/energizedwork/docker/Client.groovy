@@ -1,5 +1,6 @@
 package com.energizedwork.docker
 
+import com.energizedwork.docker.event.container.CommitContainer
 import com.energizedwork.docker.event.container.CreateContainer
 import com.energizedwork.docker.event.container.DeleteContainer
 import com.energizedwork.docker.event.container.DownloadFiles
@@ -62,6 +63,8 @@ class Client {
     void pause(String id)   { server.request new PauseContainer(id) }
     void unpause(String id) { server.request new UnpauseContainer(id) }
     void delete(String id)  { server.request new DeleteContainer(id) }
+
+    void commit(String id, String imageName, String tagName)  { server.request new CommitContainer(id, imageName, tagName) }
 
     Hub getHub() { new Hub(server: server) }
 

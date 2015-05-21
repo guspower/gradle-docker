@@ -113,7 +113,6 @@ class ApiCheckSpec extends Specification implements AsyncTestUtils {
         then:
             waitFor 'container has ip address', {
                 def details = client.inspect(container.id)
-                println details
                 details.networkSettings.ip
             }
 
@@ -334,6 +333,34 @@ CMD ["/bin/true"]
             tag       = generateUniqueName()
     }
 
+    def 'can create an image from a container'() {
+        given:
+            busybox.hostName = hostName
+
+        when:
+            ContainerDetail container = createAndStart(busybox)
+
+        then:
+            waitFor created
+
+        and:
+            client.stop container.id
+            waitFor stopped
+
+        when:
+            client.commit container.id, imageName, tag
+
+        and:
+            def details = client.inspectImage("$imageName:$tag")
+
+        then:
+            details
+
+        where:
+            imageName = 'busybox-new'
+            tag       = generateUniqueName()
+            hostName  = generateUniqueName()
+    }
 
     private void initConditions(String id) {
         created = condition('container created', { client.containers().find { it.id == id } })
