@@ -9,12 +9,13 @@ import com.energizedwork.gradle.DockerPluginExtension
 class CreateContainerTask extends AbstractDockerTask {
 
     List<String> command
+    String hostname
     String image
 
     Container container
 
     void run(Client client, DockerPluginExtension extension) {
-        def create = new CreateContainer(imageName: image, command: command)
+        def create = new CreateContainer(hostName: hostname, imageName: image, command: command)
 
         container = client.create(create)
     }

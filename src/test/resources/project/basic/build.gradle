@@ -1,3 +1,6 @@
+import com.energizedwork.gradle.docker.task.CreateContainerTask
+import com.energizedwork.gradle.docker.task.StopContainerTask
+
 buildscript {
     dependencies {
         classpath rootProject
@@ -7,6 +10,7 @@ buildscript {
     }
 }
 
+apply plugin: 'groovy'
 apply plugin: 'gradle-docker'
 
 docker {
@@ -22,18 +26,22 @@ docker {
         }
     }
 
-    container {
-        counter {
-            create {
-                before = 'test'
-                image = 'busybox:latest'
-                command = ['/bin/sh']
-            }
-            delete {
+//    container {
+//        testContainer {
+//            runBefore = 'test'
+//            image     = 'busybox:latest'
+//            command   = ['/bin/sh']
+//        }
+//    }
 
-            }
-        }
-    }
+}
 
+task startNewContainer(type: CreateContainerTask) {
+    command  = ['/bin/sh']
+    hostname = 'docker-gradle-test-container'
+    image    = 'busybox:latest'
+}
+
+task stopContainer(type: StopContainerTask) {
 
 }

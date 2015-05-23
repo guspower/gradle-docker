@@ -71,6 +71,11 @@ class Client {
     List<Container> containers() { server.get new ListContainers() }
     List<Image> images() { server.get new ListImages() }
 
+    Container findContainerByName(String name) {
+        String nameWithLeadingSlash = name.startsWith('/') ?: "/$name"
+        containers().find { it.names.contains(name) || it.names.contains(nameWithLeadingSlash) }
+    }
+
     void buildImage(String name, String tag, String dockerFile) {
         server.request(new BuildImage(name: name, tag: tag, dockerFile: dockerFile))
     }
