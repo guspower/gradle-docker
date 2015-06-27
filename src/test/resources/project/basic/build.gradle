@@ -1,4 +1,6 @@
 import com.energizedwork.gradle.docker.task.CreateContainerTask
+import com.energizedwork.gradle.docker.task.DeleteContainerTask
+import com.energizedwork.gradle.docker.task.StartContainerTask
 import com.energizedwork.gradle.docker.task.StopContainerTask
 
 buildscript {
@@ -36,12 +38,25 @@ docker {
 
 }
 
-task startNewContainer(type: CreateContainerTask) {
-    command  = ['/bin/sh']
-    hostname = 'docker-gradle-test-container'
+String TEST_CONTAINER_NAME = 'docker-gradle-test-container'
+
+task createNewContainer(type: CreateContainerTask) {
+    command  = ['/bin/sh', '-c', '"while true; do sleep 1; done"']
+    hostname = TEST_CONTAINER_NAME
     image    = 'busybox:latest'
 }
 
-task stopContainer(type: StopContainerTask) {
+task startNewContainer(type: StartContainerTask, dependsOn: ['createNewContainer']) {
+    hostname = TEST_CONTAINER_NAME
+}
 
+task stopContainer(type: StopContainerTask) {
+    hostname = TEST_CONTAINER_NAME
+}
+
+task startAndStopContainer(dependsOn: ['startNewContainer'])
+startAndStopContainer.finalizedBy stopContainer
+
+task deleteContainer(type: DeleteContainerTask, dependsOn: ['startAndStopContainer']) {
+    hostname = TEST_CONTAINER_NAME
 }

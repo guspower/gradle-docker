@@ -20,4 +20,12 @@ class Container {
         created = new Date(utcDate.toInteger() * 1000)
     }
 
+    boolean isRunning() {
+        status && status.contains('Up')
+    }
+
+    boolean isStopped() {
+        status?.toLowerCase()?.contains('exit')
+    }
+
 }

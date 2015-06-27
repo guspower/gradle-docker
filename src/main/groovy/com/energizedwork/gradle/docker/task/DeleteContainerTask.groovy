@@ -5,10 +5,10 @@ import com.energizedwork.gradle.DockerPluginExtension
 
 class DeleteContainerTask extends AbstractDockerTask {
 
-    String id
+    String hostname
 
     void run(Client client, DockerPluginExtension extension) {
-        client.delete id
+        client.delete hostname
     }
 
 }

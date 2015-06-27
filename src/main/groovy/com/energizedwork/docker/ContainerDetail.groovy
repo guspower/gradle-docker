@@ -3,7 +3,7 @@ package com.energizedwork.docker
 import groovy.transform.ToString
 
 
-@ToString(includePackage = false, includeFields = true)
+@ToString(includePackage = false, includeNames = true)
 class ContainerDetail {
 
     String json
@@ -45,7 +45,7 @@ class ContainerDetail {
      }
      */
 
-    @ToString(includePackage = false, includeFields = true)
+    @ToString(includePackage = false, includeNames = true)
     static class Config {
         String hostName
         String user
@@ -76,21 +76,15 @@ class ContainerDetail {
 //        "WorkingDir": ""
     }
 
-    @ToString(includePackage = false, includeFields = true)
+    @ToString(includePackage = false, includeNames = true)
     static class State {
         boolean running
         Integer pid
         Integer exitCode
         boolean paused
-
-//        "Running": false,
-//        "Pid": 0,
-//        "ExitCode": 0,
-//        "StartedAt": "2013-05-07T14:51:42.087658+02:01360",
-//        "Ghost": false
     }
 
-    @ToString(includePackage = false, includeFields = true)
+    @ToString(includePackage = false, includeNames = true)
     static class NetworkSettings {
         String ip
         String gateway

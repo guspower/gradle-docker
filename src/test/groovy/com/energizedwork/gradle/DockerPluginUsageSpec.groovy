@@ -1,6 +1,7 @@
 package com.energizedwork.gradle
 
 import com.energizedwork.docker.Container
+import com.energizedwork.docker.ContainerDetail
 import com.energizedwork.docker.DockerTestTrait
 import org.gradle.tooling.BuildLauncher
 import org.gradle.tooling.GradleConnector
@@ -40,7 +41,34 @@ class DockerPluginUsageSpec extends Specification implements DockerTestTrait {
             project = 'basic'
     }
 
-    def 'can start stop and delete container through gradle'() {
+    def 'can start container through gradle'() {
+        given:
+            def build = gradle(project)
+
+        and:
+            def stdout = new ByteArrayOutputStream()
+
+        when:
+            build.standardOutput = stdout
+            build.forTasks(task).run()
+
+        then:
+            stdout.toString().contains 'BUILD SUCCESSFUL'
+
+        when:
+            Container container = client.findContainerByName(TEST_CONTAINER_NAME)
+            ContainerDetail detail = client.inspect(container.id)
+
+        then:
+            container
+            detail.state.running
+
+        where:
+            task    = 'startNewContainer'
+            project = 'basic'
+    }
+
+    def 'can stop container through gradle'() {
         given:
             def build = gradle(project)
 
@@ -56,10 +84,33 @@ class DockerPluginUsageSpec extends Specification implements DockerTestTrait {
             println stdout
 
         and:
-            client.findContainerByName TEST_CONTAINER_NAME
+            waitFor { ! client.findContainerByName(TEST_CONTAINER_NAME).running }
 
         where:
-            task    = 'startNewContainer'
+            task    = 'startAndStopContainer'
+            project = 'basic'
+    }
+
+    def 'can delete container through gradle'() {
+        given:
+            def build = gradle(project)
+
+        and:
+            def stdout = new ByteArrayOutputStream()
+
+        when:
+            build.standardOutput = stdout
+            build.forTasks(task).run()
+
+        then:
+            stdout.toString().contains 'BUILD SUCCESSFUL'
+            println stdout
+
+        and:
+            waitFor { ! client.findContainerByName(TEST_CONTAINER_NAME) }
+
+        where:
+            task    = 'deleteContainer'
             project = 'basic'
     }
 
