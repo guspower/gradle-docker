@@ -3,6 +3,8 @@ import com.energizedwork.gradle.docker.task.DeleteContainerTask
 import com.energizedwork.gradle.docker.task.StartContainerTask
 import com.energizedwork.gradle.docker.task.StopContainerTask
 
+String TEST_CONTAINER_NAME = 'docker-gradle-test-container'
+
 buildscript {
     dependencies {
         classpath rootProject
@@ -28,17 +30,23 @@ docker {
         }
     }
 
-//    container {
-//        testContainer {
-//            runBefore = 'test'
-//            image     = 'busybox:latest'
-//            command   = ['/bin/sh']
-//        }
-//    }
+    containers {
+        container {
+            name    = TEST_CONTAINER_NAME
+            before  = 'useDSLTask'
+            after   = 'useDSLTask'
+            create  = true
+            delete  = true
+            image   = 'busybox:latest'
+            command = ['/bin/sh', '-c', '"while true; do sleep 1; done"']
+        }
+    }
 
 }
 
-String TEST_CONTAINER_NAME = 'docker-gradle-test-container'
+task useDSLTask << {
+    assert docker.containers["${TEST_CONTAINER_NAME}"].info.networkSettings.ip
+}
 
 task createNewContainer(type: CreateContainerTask) {
     command  = ['/bin/sh', '-c', '"while true; do sleep 1; done"']

@@ -114,6 +114,26 @@ class DockerPluginUsageSpec extends Specification implements DockerTestTrait {
             project = 'basic'
     }
 
+    def 'can control containers using DSL'() {
+        given:
+            def build = gradle(project)
+
+        and:
+            def stdout = new ByteArrayOutputStream()
+
+        when:
+            build.standardOutput = stdout
+            build.forTasks(task).run()
+
+        then:
+            stdout.toString().contains 'BUILD SUCCESSFUL'
+            println stdout
+
+        where:
+            task    = 'useDSLTask'
+            project = 'basic'
+    }
+
     private BuildLauncher gradle(String projectName) {
         File projectDir = new File("src/test/resources/project/$projectName")
         ProjectConnection connection = GradleConnector.newConnector()

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cp settings.gradle.root settings.gradle
+./gradlew assemble --stacktrace
+cp settings.gradle.full settings.gradle
+./gradlew assemble --stacktrace $1

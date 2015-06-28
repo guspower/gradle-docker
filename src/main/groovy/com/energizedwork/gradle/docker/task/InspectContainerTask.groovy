@@ -1,24 +1,24 @@
 package com.energizedwork.gradle.docker.task
 
 import com.energizedwork.docker.Client
+import com.energizedwork.docker.Container
 import com.energizedwork.docker.ContainerDetail
 import com.energizedwork.gradle.DockerPluginExtension
 
 
 class InspectContainerTask extends AbstractDockerTask {
 
-    File file
-    String id
+    String hostname
+    Closure action
 
     @Override
     void run(Client client, DockerPluginExtension extension) {
-        if(!file.exists()) {
-            file.parentFile.mkdirs()
-            file.createNewFile()
+        Container container = client.findContainerByName(hostname)
+        if(container) {
+            action.call client.inspect(container.id)
+        } else {
+            println "WARN: No container found for $hostname"
         }
-
-        ContainerDetail detail = client.inspect(id)
-        file.text = detail.json
     }
 
 }
