@@ -53,6 +53,28 @@ Verify your configuration with openssl:
 
     printf 'GET /version HTTP/1.1\r\n\r\n' | openssl s_client -connect localhost:2376 -CAfile ca.pem -cert client-cert.pem -key client-key.pem
     
+Update your Gradle build settings:
+
+    docker {
+        host {
+            url = 'https://localhost:2376'
+            tls {
+                keystore {
+                    password = <keystore password>
+                    file = <keystore file>
+                }
+                truststore {
+                    password = <truststore password>
+                    file = <truststore file>
+                }
+            }
+        }
+    }
+    
+*gradle-docker* uses 'password' for both keystore and truststore passwords by default. 
+
+If keystore or truststore file locations are not specified it will default to ~/.docker/$host/client.jks and ~/.docker/$host/client.jts respectively.
+    
 ## 4. Test Connectivity
 
      ./gradlew containers
@@ -102,3 +124,17 @@ Verify your configuration with openssl:
 
 # Licence
 gradle-docker is licensed under the [GNU GPLv2](https://www.gnu.org/licenses/gpl-2.0.html "GNU GPLv2").
+
+<script src="//static.getclicky.com/js" type="text/javascript"></script>
+<script type="text/javascript">try{ clicky.init(100857024); }catch(e){}</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-28715172-9', 'auto');
+  ga('send', 'pageview');
+
+</script>
