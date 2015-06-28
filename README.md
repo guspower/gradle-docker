@@ -13,7 +13,7 @@ Plugin for managing [Docker](https://www.docker.com/ "Docker website") container
             }
         }
         dependencies {
-            classpath "com.energizedwork:gradle-docker:0.2-20150628145538"
+            classpath "com.energizedwork:gradle-docker:0.2"
         }
     }
 
@@ -21,7 +21,7 @@ Plugin for managing [Docker](https://www.docker.com/ "Docker website") container
 
     apply plugin: 'gradle-docker'
     
-## 3. Configure Docker Host
+## 3. Configure Docker Host Settings
 
     docker {
         host {
@@ -31,10 +31,28 @@ Plugin for managing [Docker](https://www.docker.com/ "Docker website") container
         ...
     }
     
-## 3a. Use TLS (Optional)
+## 3a. Configure Docker Host To Serve Over HTTP/HTTPS
+Modify your docker host configuration to listen over TCP, e.g:
 
-//TODO
+    DOCKER_OPTS="-H localhost:2375"
+    
+Verify your configuration with curl:
 
+    curl http://localhost:2375/version
+    
+## 3b. Use TLS (Optional)
+Modify your docker host configuration to use TLS:
+
+    echo DOCKER_OPTS="-H localhost:2376 --tlsverify=true --tlscacert=/etc/ssl/ca.pem --tlscert=/etc/ssl/server-cert.pem --tlskey=/etc/ssl/server-key.pem" 
+
+Verify your configuration with docker:
+
+    docker --tlsverify --tlscacert=/etc/ssl/ca.pem --tlscert=/etc/ssl/client-cert.pem --tlskey=/etc/ssl/client-key.pem -H=localhost:2376 version
+
+Verify your configuration with openssl:
+
+    printf 'GET /version HTTP/1.1\r\n\r\n' | openssl s_client -connect localhost:2376 -CAfile ca.pem -cert client-cert.pem -key client-key.pem
+    
 ## 4. Test Connectivity
 
      ./gradlew containers

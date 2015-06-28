@@ -12,8 +12,8 @@ apply plugin: 'maven-publish'
 apply plugin: 'idea'
 apply plugin: 'java-gradle-plugin'
 
-version            = '0.2-SNAPSHOT'
-ext.releaseVersion = calculateVersion('0.2-SNAPSHOT')
+version            = '0.2'
+ext.releaseVersion = calculateVersion('0.2')
 
 repositories {
     jcenter()

@@ -82,10 +82,11 @@ class DockerContainerPlan {
     }
 
     private <T extends Task> T createTask(String shortName, String when, Task task, Class<T> clazz) {
-        def t = _project.tasks.create(taskName(shortName, when, task), clazz)
-        t.hostname = name
+        def result = _project.tasks.create(taskName(shortName, when, task), clazz)
+        result.description = "$result.description $when $task.name".replace('a docker container', name)
+        result.hostname = name
 
-        t
+        result
     }
 
     private String taskName(String action, String when, Task task) {

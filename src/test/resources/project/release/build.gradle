@@ -10,7 +10,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.energizedwork:gradle-docker:0.2-20150628145538"
+        classpath "com.energizedwork:gradle-docker:0.2"
     }
 }
 
