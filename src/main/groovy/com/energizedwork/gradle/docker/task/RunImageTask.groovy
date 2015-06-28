@@ -6,6 +6,8 @@ import com.energizedwork.gradle.DockerPluginExtension
 
 class RunImageTask extends AbstractDockerTask {
 
+    String description = 'Creates and runs a docker container from a given image'
+
     String imageName
     String tag
     List<String> command

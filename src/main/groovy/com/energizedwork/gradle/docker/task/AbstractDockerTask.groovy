@@ -7,6 +7,8 @@ import org.gradle.api.tasks.TaskAction
 
 abstract class AbstractDockerTask extends DefaultTask {
 
+    final String group = 'Docker'
+
     @TaskAction
     void run() {
         DockerPluginExtension extension = project.docker

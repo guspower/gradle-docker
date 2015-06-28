@@ -3,6 +3,8 @@ import com.energizedwork.gradle.docker.task.DeleteContainerTask
 import com.energizedwork.gradle.docker.task.StartContainerTask
 import com.energizedwork.gradle.docker.task.StopContainerTask
 
+defaultTasks 'useDSLTask'
+
 String TEST_CONTAINER_NAME = 'docker-gradle-test-container'
 
 buildscript {
@@ -45,7 +47,7 @@ docker {
 }
 
 task useDSLTask << {
-    assert docker.containers["${TEST_CONTAINER_NAME}"].info.networkSettings.ip
+    assert docker.containers["${TEST_CONTAINER_NAME}"].networkSettings.ip
 }
 
 task createNewContainer(type: CreateContainerTask) {

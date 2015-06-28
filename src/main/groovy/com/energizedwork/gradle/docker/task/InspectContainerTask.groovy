@@ -8,6 +8,8 @@ import com.energizedwork.gradle.DockerPluginExtension
 
 class InspectContainerTask extends AbstractDockerTask {
 
+    String description = 'Inspects a docker container'
+
     String hostname
     Closure action
 

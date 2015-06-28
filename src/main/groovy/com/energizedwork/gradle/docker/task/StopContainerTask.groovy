@@ -6,6 +6,8 @@ import com.energizedwork.gradle.DockerPluginExtension
 
 class StopContainerTask extends AbstractDockerTask {
 
+    String description = 'Stops a docker container'
+
     String hostname
 
     @Override

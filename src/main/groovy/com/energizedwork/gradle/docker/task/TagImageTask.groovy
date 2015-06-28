@@ -6,6 +6,8 @@ import com.energizedwork.gradle.DockerPluginExtension
 
 class TagImageTask extends AbstractDockerTask {
 
+    String description = 'Tags a docker image with a given tag'
+
     String imageName
     String tag
     String newTag

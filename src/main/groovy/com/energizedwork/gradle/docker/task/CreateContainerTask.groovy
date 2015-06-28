@@ -8,6 +8,8 @@ import com.energizedwork.gradle.DockerPluginExtension
 
 class CreateContainerTask extends AbstractDockerTask {
 
+    String description = 'Creates a docker container'
+
     List<String> command
     String hostname
     String image

@@ -6,6 +6,8 @@ import com.energizedwork.gradle.DockerPluginExtension
 
 class UploadImageTask extends AbstractDockerTask {
 
+    String description = 'Uploads a docker image to the docker host'
+
     File file
     String imageName
     String tag

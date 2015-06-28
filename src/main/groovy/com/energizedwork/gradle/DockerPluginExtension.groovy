@@ -5,6 +5,7 @@ import com.energizedwork.docker.Container
 import com.energizedwork.docker.ContainerDetail
 import com.energizedwork.docker.http.DockerServerConfig
 import com.energizedwork.gradle.docker.config.Host
+import com.energizedwork.gradle.docker.dsl.DockerContainerDSL
 import groovy.transform.ToString
 import org.gradle.api.Project
 
@@ -55,39 +56,4 @@ class DockerPluginExtension {
 
 }
 
-class DockerContainerDSL {
 
-    private Project _project
-
-    DockerContainerDSL(Project project) {
-        this._project = project
-    }
-
-    List<DockerContainerPlan> containers = []
-
-    void container(Closure closure) {
-        def container = new DockerContainerPlan()
-        _project.configure container, closure
-        containers << container
-    }
-
-    Object getAt(String name) {
-        containers.find { it.name == name }
-    }
-
-}
-
-@ToString(includePackage = false, includeNames = true)
-class DockerContainerPlan {
-
-    String name
-    String before
-    String after
-    boolean create = true
-    boolean delete = true
-    String image   = 'busybox:latest'
-    List<String> command = ['/bin/sh']
-
-    ContainerDetail info
-
-}

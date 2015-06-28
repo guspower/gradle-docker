@@ -45,7 +45,7 @@ class Host {
     String getProtocol() { _protocol ?: tls ? 'https': 'http' }
     void setProtocol(String protocol) { _protocol = protocol }
 
-    URL getUrl() throws MalformedURLException { _url ?: buildUrl(name, port, tls) }
+    URL getUrl() throws MalformedURLException { _url ?: buildUrl(name, port) }
     void setUrl(String urlString) throws MalformedURLException {
         _url = urlString.toURL()
         name     = _url.host
@@ -72,7 +72,7 @@ class Host {
         }
     }
 
-    private URL buildUrl(String name, Integer port, Tls tls) throws MalformedURLException {
+    private URL buildUrl(String name, Integer port) throws MalformedURLException {
         def result = new StringBuilder()
 
         result << protocol

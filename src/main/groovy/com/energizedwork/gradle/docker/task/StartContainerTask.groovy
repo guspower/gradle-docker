@@ -6,6 +6,8 @@ import com.energizedwork.gradle.DockerPluginExtension
 
 class StartContainerTask extends AbstractDockerTask {
 
+    String description = 'Starts a docker container'
+
     String hostname
 
     @Override

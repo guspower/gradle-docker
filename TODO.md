@@ -1,5 +1,13 @@
 ! TODO
 
+* Basic usage docs
+    * Deploy to bintray
+    * Sample gradle project
+    * TLS setup
+    
+* Default URL
+    * Externalized config?
+
 * Extend create container functionality to include
     * binds
     * links

@@ -1,0 +1,48 @@
+defaultTasks 'testGradleDockerPlugin'
+
+String TEST_CONTAINER_NAME = 'docker-gradle-test-container'
+
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url  "http://dl.bintray.com/guspower/maven"
+        }
+    }
+    dependencies {
+        classpath "com.energizedwork:gradle-docker:0.2-20150628145538"
+    }
+}
+
+apply plugin: 'gradle-docker'
+
+docker {
+    host {
+        url = 'https://spinship:664'
+        tls {
+            keystore {
+                password = 'password'
+            }
+            truststore {
+                password = 'password'
+            }
+        }
+    }
+
+    containers {
+        container {
+            name    = TEST_CONTAINER_NAME
+            before  = 'testGradleDockerPlugin'
+            after   = 'testGradleDockerPlugin'
+            create  = true
+            delete  = true
+            image   = 'busybox:latest'
+            command = ['/bin/sh', '-c', '"while true; do sleep 1; done"']
+        }
+    }
+
+}
+
+task testGradleDockerPlugin << {
+    assert docker.containers["${TEST_CONTAINER_NAME}"].networkSettings.ip
+}
